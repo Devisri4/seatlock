@@ -50,9 +50,9 @@ idempotency keys         rate-limit counters
 | 1 | Repo, Spring Boot + React skeletons, CI, Flyway schema (shows, seats, bookings) | Build + tests green in CI | Done |
 | 2 | Shows and seat map API (read-only), seed demo data | API tests pass | Done |
 | 3 | Seat hold in Redis: hold, release, auto-expire (Testcontainers Redis in tests) | Tests pass | Done |
-| 4 | Booking + payment: transaction, unique constraint, idempotency key | Tests pass | Next |
-| 5 | Concurrency proof: 500 parallel requests on one seat -> exactly 1 booking | Test passes in CI | |
-| 6 | WebSockets: live seat updates to every open browser | Two browsers see each other's holds | |
+| 4 | Booking + payment: transaction, unique constraint, idempotency key | Tests pass | Done |
+| 5 | Concurrency proof: 500 parallel requests on one seat -> exactly 1 booking | Test passes in CI | Done |
+| 6 | WebSockets: live seat updates to every open browser | Two browsers see each other's holds | Next |
 | 7 | React UI: show list, seat map, hold timer, checkout, my bookings | Works in the browser | |
 | 8 | Rate limit, deploy (Neon + Upstash + Render + Vercel), README, screenshots | Live demo link | |
 

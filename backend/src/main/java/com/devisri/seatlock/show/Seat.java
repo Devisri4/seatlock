@@ -72,4 +72,19 @@ public class Seat {
     public long getVersion() {
         return version;
     }
+
+    public String label() {
+        return rowLabel + seatNumber;
+    }
+
+    /**
+     * Marks the seat sold. On commit Hibernate runs {@code UPDATE seats SET status='SOLD', version=v+1
+     * WHERE id=? AND version=v}; if another transaction sold it first, no row matches and the commit fails.
+     */
+    public void markSold() {
+        if (status == SeatStatus.SOLD) {
+            throw new IllegalStateException("Seat " + label() + " is already sold");
+        }
+        status = SeatStatus.SOLD;
+    }
 }

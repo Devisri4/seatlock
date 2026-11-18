@@ -33,9 +33,16 @@ public class HoldService {
         if (seat.getStatus() == SeatStatus.SOLD) {
             throw new SeatUnavailableException("Seat " + label(seat) + " is already sold");
         }
-        return store.hold(seatId, guestId.toString(), properties.duration())
-                .map(hold -> new HoldView(seatId, hold.expiresAt()))
+        Hold hold = store.hold(seatId, guestId.toString(), properties.duration())
                 .orElseThrow(() -> new SeatUnavailableException("Seat " + label(seat) + " is held by someone else"));
+
+        // Check again now that we hold it: a buyer releases their hold right after paying, so the seat
+        // may have been sold between the check above and our hold. Never leave a hold on a sold seat.
+        if (seats.findById(seatId).map(Seat::getStatus).orElse(SeatStatus.SOLD) == SeatStatus.SOLD) {
+            store.release(seatId, guestId.toString());
+            throw new SeatUnavailableException("Seat " + label(seat) + " is already sold");
+        }
+        return new HoldView(seatId, hold.expiresAt());
     }
 
     /** Lets the seat go. Doing nothing is fine if this guest doesn't hold it (releasing twice is harmless). */
