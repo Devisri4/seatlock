@@ -5,8 +5,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
+import com.devisri.seatlock.live.HoldExpiryWatcher;
+import com.devisri.seatlock.live.SeatEvents;
 import com.devisri.seatlock.show.Seat;
 import com.devisri.seatlock.show.SeatRepository;
+import com.devisri.seatlock.show.SeatState;
 import com.devisri.seatlock.show.SeatStatus;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +23,16 @@ public class HoldService {
     private final SeatRepository seats;
     private final SeatHoldStore store;
     private final HoldProperties properties;
+    private final SeatEvents events;
+    private final HoldExpiryWatcher expiryWatcher;
 
-    public HoldService(SeatRepository seats, SeatHoldStore store, HoldProperties properties) {
+    public HoldService(SeatRepository seats, SeatHoldStore store, HoldProperties properties,
+                       SeatEvents events, HoldExpiryWatcher expiryWatcher) {
         this.seats = seats;
         this.store = store;
         this.properties = properties;
+        this.events = events;
+        this.expiryWatcher = expiryWatcher;
     }
 
     /** Holds the seat for this guest for 5 minutes, or explains why not (409). Holding it again restarts the timer. */
@@ -42,13 +50,17 @@ public class HoldService {
             store.release(seatId, guestId.toString());
             throw new SeatUnavailableException("Seat " + label(seat) + " is already sold");
         }
+        events.seatChanged(showId, seatId, SeatState.HELD);
+        expiryWatcher.watch(showId, seatId, properties.duration());
         return new HoldView(seatId, hold.expiresAt());
     }
 
     /** Lets the seat go. Doing nothing is fine if this guest doesn't hold it (releasing twice is harmless). */
     public void release(long showId, long seatId, UUID guestId) {
         seatInShow(showId, seatId);
-        store.release(seatId, guestId.toString());
+        if (store.release(seatId, guestId.toString())) {
+            events.seatChanged(showId, seatId, SeatState.AVAILABLE);
+        }
     }
 
     /** The seats of this show that this guest currently holds. */

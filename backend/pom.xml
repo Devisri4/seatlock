@@ -33,6 +33,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+        <!-- Live seat map: STOMP over WebSocket pushes every hold, release and sale to open browsers -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
 
         <!-- Shows, seats and bookings live in Postgres (Neon) in production, H2 when no database is configured -->
         <dependency>

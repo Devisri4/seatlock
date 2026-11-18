@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { isApiUp } from '../api.js';
+import { isApiUp } from '../lib/api.js';
 import { Badge } from './ui.jsx';
 
 const STATES = {
-  checking: { tone: 'neutral', dot: 'bg-gray-400 animate-pulse', label: 'Connecting to API…' },
+  checking: { tone: 'neutral', dot: 'bg-gray-400 animate-pulse', label: 'Connecting…' },
   up: { tone: 'green', dot: 'bg-emerald-500', label: 'API online' },
   down: { tone: 'red', dot: 'bg-red-500', label: 'API offline' },
 };

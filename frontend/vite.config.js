@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// In development the page calls /api on its own address and Vite forwards it to the
+// In development the page calls /api, /actuator and /ws on its own address and Vite forwards them to the
 // Spring Boot backend on port 8080, so no CORS setup is needed locally or in Codespaces.
 export default defineConfig({
   plugins: [react()],
@@ -12,6 +12,7 @@ export default defineConfig({
     proxy: {
       '/api': 'http://localhost:8080',
       '/actuator': 'http://localhost:8080',
+      '/ws': { target: 'ws://localhost:8080', ws: true },
     },
   },
   test: {

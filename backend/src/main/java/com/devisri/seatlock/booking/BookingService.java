@@ -16,8 +16,10 @@ import com.devisri.seatlock.hold.Hold;
 import com.devisri.seatlock.hold.SeatHoldStore;
 import com.devisri.seatlock.hold.SeatNotFoundException;
 import com.devisri.seatlock.hold.SeatUnavailableException;
+import com.devisri.seatlock.live.SeatEvents;
 import com.devisri.seatlock.show.Seat;
 import com.devisri.seatlock.show.SeatRepository;
+import com.devisri.seatlock.show.SeatState;
 import com.devisri.seatlock.show.SeatStatus;
 import com.devisri.seatlock.show.Show;
 import com.devisri.seatlock.show.ShowRepository;
@@ -50,15 +52,17 @@ public class BookingService {
     private final ShowRepository shows;
     private final SeatHoldStore holds;
     private final TransactionTemplate transaction;
+    private final SeatEvents events;
     private final Clock clock;
 
     public BookingService(BookingRepository bookings, SeatRepository seats, ShowRepository shows, SeatHoldStore holds,
-                          TransactionTemplate transaction, Clock clock) {
+                          TransactionTemplate transaction, SeatEvents events, Clock clock) {
         this.bookings = bookings;
         this.seats = seats;
         this.shows = shows;
         this.holds = holds;
         this.transaction = transaction;
+        this.events = events;
         this.clock = clock;
     }
 
@@ -104,7 +108,10 @@ public class BookingService {
             throw new SeatUnavailableException("Sorry, one of these seats was just sold to someone else");
         }
 
-        seatIds.forEach(id -> holds.release(id, guest)); // the seats are SOLD now; the holds are no longer needed
+        for (Long seatId : seatIds) {
+            holds.release(seatId, guest); // the seat is SOLD now; the hold is no longer needed
+            events.seatChanged(showId, seatId, SeatState.SOLD);
+        }
         return new BookingResult(view(booking), true);
     }
 

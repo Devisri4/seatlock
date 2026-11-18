@@ -52,9 +52,9 @@ idempotency keys         rate-limit counters
 | 3 | Seat hold in Redis: hold, release, auto-expire (Testcontainers Redis in tests) | Tests pass | Done |
 | 4 | Booking + payment: transaction, unique constraint, idempotency key | Tests pass | Done |
 | 5 | Concurrency proof: 500 parallel requests on one seat -> exactly 1 booking | Test passes in CI | Done |
-| 6 | WebSockets: live seat updates to every open browser | Two browsers see each other's holds | Next |
-| 7 | React UI: show list, seat map, hold timer, checkout, my bookings | Works in the browser | |
-| 8 | Rate limit, deploy (Neon + Upstash + Render + Vercel), README, screenshots | Live demo link | |
+| 6 | WebSockets: live seat updates to every open browser | Two browsers see each other's holds | Done |
+| 7 | React UI: show list, seat map, hold timer, checkout, my bookings | Works in the browser | Done (tests in CI; live check after deploy) |
+| 8 | Rate limit, deploy (Neon + Upstash + Render + Vercel), README, screenshots | Live demo link | Next |
 
 Done when the live site lets two people fight over one seat, only one gets it, and CI proves it with the
 500-request test.
