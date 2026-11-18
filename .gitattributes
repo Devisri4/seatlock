@@ -1,0 +1,4 @@
+# Linux CI runs mvnw, so it must keep LF line endings even when committed from Windows.
+mvnw text eol=lf
+*.sh text eol=lf
+*.cmd text eol=crlf
