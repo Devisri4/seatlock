@@ -21,6 +21,7 @@ public final class ShowDtos {
     public record SeatRow(String label, List<SeatView> seats) {
     }
 
-    public record SeatView(Long id, int number, int priceCents, SeatStatus status) {
+    /** {@code heldByYou} is true only for the guest who holds the seat; others just see HELD. */
+    public record SeatView(Long id, int number, int priceCents, SeatState status, boolean heldByYou) {
     }
 }

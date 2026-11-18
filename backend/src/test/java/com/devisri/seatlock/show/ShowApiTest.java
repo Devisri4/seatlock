@@ -93,7 +93,7 @@ abstract class ShowApiTest {
         ShowDetail detail = rest.getForObject("/api/shows/" + jazz, ShowDetail.class);
 
         assertThat(detail.rows().get(0).seats()).extracting(SeatView::status)
-                .containsExactly(SeatStatus.AVAILABLE, SeatStatus.SOLD, SeatStatus.AVAILABLE);
+                .containsExactly(SeatState.AVAILABLE, SeatState.SOLD, SeatState.AVAILABLE);
         assertThat(detail.rows().get(1).seats()).allSatisfy(seat -> assertThat(seat.priceCents()).isEqualTo(2000));
     }
 

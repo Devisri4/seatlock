@@ -8,6 +8,8 @@ status column when a step is finished.
 - One step at a time. Explain simply; don't add work that isn't in the plan.
 - Verify before saying something works (run the build/tests and show the result).
 - One commit per finished step. Tell Devi when to push; Devi pushes (gh: switch to Devisri4 first).
+- Commits are authored by Devi only: NO `Co-Authored-By` or any other Claude/AI attribution line in
+  commit messages or PR descriptions.
 - Free tools only. Never commit keys — they come from environment variables / git-ignored `.env`.
 - Keep this project fully separate from any employer code.
 - Match the style of Devi's RepoScout project (Downloads\reposcout): same stack versions, CI layout,
