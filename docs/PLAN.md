@@ -54,7 +54,7 @@ idempotency keys         rate-limit counters
 | 5 | Concurrency proof: 500 parallel requests on one seat -> exactly 1 booking | Test passes in CI | Done |
 | 6 | WebSockets: live seat updates to every open browser | Two browsers see each other's holds | Done |
 | 7 | React UI: show list, seat map, hold timer, checkout, my bookings | Works in the browser | Done (tests in CI; live check after deploy) |
-| 8 | Rate limit, deploy (Neon + Upstash + Render + Vercel), README, screenshots | Live demo link | Next |
+| 8 | Rate limit, deploy (Neon + Upstash + Render + Vercel), README, screenshots | Live demo link | Code ready; deploy + screenshots next |
 
 Done when the live site lets two people fight over one seat, only one gets it, and CI proves it with the
 500-request test.

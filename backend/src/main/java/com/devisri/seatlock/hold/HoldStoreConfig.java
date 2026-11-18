@@ -69,7 +69,7 @@ public class HoldStoreConfig {
         return config;
     }
 
-    static class RedisConfigured implements Condition {
+    public static class RedisConfigured implements Condition {
         @Override
         public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
             String url = context.getEnvironment().getProperty(REDIS_URL, "");
@@ -77,7 +77,7 @@ public class HoldStoreConfig {
         }
     }
 
-    static class NoRedisConfigured implements Condition {
+    public static class NoRedisConfigured implements Condition {
         @Override
         public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
             return !new RedisConfigured().matches(context, metadata);

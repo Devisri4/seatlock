@@ -1,0 +1,19 @@
+# Render Blueprint: creates the SeatLock API on Render's free plan.
+# Keys are NOT stored here; Render asks for them when the Blueprint is created.
+services:
+  - type: web
+    name: seatlock-api
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
+    healthCheckPath: /actuator/health
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: FRONTEND_ORIGIN
+        sync: false

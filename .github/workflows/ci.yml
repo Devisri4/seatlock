@@ -39,3 +39,24 @@ jobs:
         run: npm test
       - name: Build
         run: npm run build
+
+  docker:
+    name: Backend Docker image (what Render runs)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build image
+        run: docker build -t seatlock-api backend
+      - name: Start container and check health
+        run: |
+          docker run -d --name api -p 8080:8080 -m 512m seatlock-api
+          for i in $(seq 1 30); do
+            if curl -fs http://localhost:8080/actuator/health | grep -q UP; then
+              echo "Health UP"
+              curl -fs http://localhost:8080/api/shows | head -c 300; echo
+              exit 0
+            fi
+            sleep 3
+          done
+          docker logs api
+          exit 1
